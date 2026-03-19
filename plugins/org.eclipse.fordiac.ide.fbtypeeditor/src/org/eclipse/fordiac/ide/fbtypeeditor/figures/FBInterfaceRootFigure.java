@@ -12,15 +12,21 @@
  *******************************************************************************/
 package org.eclipse.fordiac.ide.fbtypeeditor.figures;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Color;
 
 public class FBInterfaceRootFigure extends FreeformLayer {
 
@@ -109,10 +115,38 @@ public class FBInterfaceRootFigure extends FreeformLayer {
 		outputWithColumn.setColumnWidth(columnWith);
 	}
 
+	@Override
+	protected void paintFigure(final Graphics graphics) {
+		super.paintFigure(graphics);
+
+		final var rows = getAllCommentFigures().map(IFigure::getBounds)
+				.collect(Collectors.toMap(rect -> Integer.valueOf(rect.y), rect -> rect, (rect1, rect2) -> rect1))
+				.values().stream().sorted(Comparator.comparingInt(rect -> rect.y)).toList();
+
+		if (rows.isEmpty()) {
+			return;
+		}
+
+		final Rectangle bounds = getBounds();
+		graphics.pushState();
+		graphics.setBackgroundColor(new Color(245, 245, 245));
+
+		for (int i = 1; i < rows.size(); i += 2) { // Start at 1, skip every other
+			graphics.fillRectangle(bounds.x, rows.get(i).y, bounds.width, rows.get(i).height);
+		}
+
+		graphics.popState();
+	}
+
 	private static Figure createColumn(final LayoutManager layoutManager) {
 		final Figure column = new Figure();
 		column.setLayoutManager(layoutManager);
 		return column;
+	}
+
+	Stream<IFigure> getAllCommentFigures() {
+		return Stream.concat(getInputCommentsColumn().getChildren().stream(),
+				getOutputCommentsColumn().getChildren().stream());
 	}
 
 }
