@@ -340,5 +340,32 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>api-check</id>
+			<build>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-apitools-plugin</artifactId>
+                    <version>${tycho.version}</version>
+                    <configuration>
+                        <failOnError>true</failOnError>
+                        <baselines>
+                                <repository>
+                                    <url>https://download.eclipse.org/4diac/updates/latest</url>
+                                </repository>
+                        </baselines>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
 	</profiles>
 </project> 
