@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-	<extension
-    		point="org.eclipse.fordiac.ide.typeeditor.typeEditorPage">
-		<editorPage
-        		class="org.eclipse.fordiac.ide.fbtypeeditor.doc.editors.DescriptionEditor"
-            	sortIndex="70">
-      	</editorPage>
-   	</extension>
+  <extension
+      point="org.eclipse.fordiac.ide.typeeditor.typeEditorPage">
+    <editorPage
+        class="org.eclipse.fordiac.ide.fbtypeeditor.doc.editors.DescriptionEditor"
+        sortIndex="70">
+      <enablement>
+        <test property="org.eclipse.fordiac.ide.fbtypeeditor.doc.legacyDocumentation" forcePluginActivation="true"/>
+      </enablement>
+    </editorPage>
+  </extension>
+  <extension point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+        id="org.eclipse.fordiac.ide.fbtypeeditor.doc.legacyDocumentation"
+        type="java.lang.Object"
+        namespace="org.eclipse.fordiac.ide.fbtypeeditor.doc"
+        properties="legacyDocumentation"
+        class="org.eclipse.fordiac.ide.fbtypeeditor.doc.LegacyDocumentationTester">
+    </propertyTester>
+  </extension>
 </plugin>
