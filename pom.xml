@@ -61,7 +61,7 @@
 	</repositories>
 
 	<pluginRepositories>
-		<pluginRepository>			
+		<pluginRepository>
 			<id>cbi</id>
 			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 			<releases>
@@ -69,6 +69,16 @@
 			</releases>
 			<snapshots>
 				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>dash-licenses-snapshots</id>
+			<url>https://repo.eclipse.org/content/repositories/dash-licenses-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
